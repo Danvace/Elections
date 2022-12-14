@@ -1,33 +1,33 @@
 #include <iostream>
+#include <utility>
 
 using namespace std;
-
 
 class Candidate{
 protected:
     string candidate;
-    int voises;
+    int voices;
 public:
-    int Get_voises(){
-        return voises;
+    int get_voices(){
+        return voices;
     }
-    string Get_Candidate(){
+    string get_candidate(){
         return candidate;
     }
-    void Set_voises(int honor_voises){
-        voises = honor_voises;
+    void set_voices(int honor_voices){
+        voices = honor_voices;
     }
     Candidate(){
         candidate = "";
-        voises = 0;
+        voices = 0;
     }
-    Candidate(string candidate1,int voises1){
-        this->voises = voises1;
-        this->candidate = candidate1;
+    Candidate(string candidate1,int voices1){
+        this->voices = voices1;
+        this->candidate = std::move(candidate1);
     }
     void information(){
         cout << candidate << " ";
-        cout << voises << endl;
+        cout << voices << endl;
     }
 
 };
@@ -35,31 +35,32 @@ public:
 class Elections{
 private:
     Candidate* candidates;
+    int number_of_candidate;
 public:
     Elections(){
 
     }
-    Elections(Candidate *candidates1){
+    Elections(Candidate *candidates1, int number_of_candidate){
         candidates = candidates1;
+        this->number_of_candidate = number_of_candidate;
     }
-    void Print_winner(){
+    void print_winner(){
+        int impossible_voices = -1;
+        Candidate temporary_candidate("", impossible_voices);
+        for(int i = 0;i<=number_of_candidate;i++){
 
-        Candidate temp("",-1);
-
-        for(int i = 0;i<=6;i++){
-
-            if (temp.Get_voises() < candidates[i].Get_voises()){
-                temp = candidates[i];
-
+            if (temporary_candidate.get_voices() < candidates[i].get_voices()){
+                temporary_candidate = candidates[i];
             }
+
         }
-        temp.information();
+        temporary_candidate.information();
 
     }
 };
 
 int main(){
-    Candidate candidates[100];
+    Candidate candidates[5];
     candidates[0] = Candidate("lol",6);
     candidates[1] = Candidate("Den",445);
     candidates[2] = Candidate("Veres",50);
@@ -67,12 +68,8 @@ int main(){
     candidates[4] = Candidate("Ivanka",451);
     candidates[5] = Candidate("Danulo",900);
 
-
-
-    Elections result(candidates);
-    result.Print_winner();
-
-
+    Elections result(candidates,5);
+    result.print_winner();
 
     return 0;
 }
